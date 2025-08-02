@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "grupos")
 public class Grupo {
@@ -17,6 +20,9 @@ public class Grupo {
     @NotBlank(message = "La descripción es requerida")
     @Size(max = 50, message = "Máximo 50 caracteres")
     private String descripcion;
+
+    @ManyToMany(mappedBy = "grupos")
+    private Set<Docente> docentes = new HashSet<>();
 
     public Integer getId() {
         return id;
