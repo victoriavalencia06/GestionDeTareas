@@ -1,8 +1,12 @@
 <html lang="es"
       xmlns:layout="http://ultrag.net.nz/thymeleaf/layout"
-      layout:decorate="/layouts/_mainLayout">
+      layout:decorate="/layouts/_mainLayout"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <div layout:fragment="content">
-  <h1 class="text-center">Bienvenido</h1>
+  <h1 class="text-center">Bienvenidos</h1>
+    <div sec:authorize="isAnonymous()" class="alert alert-danger text-center" role="alert">
+      Debes iniciar sesión para poder utilizar la aplicación.
+    </div>
 </div>
 </html>

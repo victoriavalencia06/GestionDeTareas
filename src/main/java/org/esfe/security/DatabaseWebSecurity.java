@@ -26,4 +26,30 @@ public class DatabaseWebSecurity {
 
         return users;
     }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+        http.authorizeHttpRequests(authorize -> authorize
+                // aperturar el acceso a los recursos estáticos
+                .requestMatchers("/assets/**", "/css/**", "/js/**").permitAll()
+                // las vistas públicas no requieren autenticación
+                .requestMatchers("/", "/privacy", "/terms").permitAll()
+
+                // Asignar permisos a URLs por ROLES
+                .requestMatchers("/grupos/**").hasAnyAuthority("admin")
+                .requestMatchers("/docentes/**").hasAnyAuthority("admin")
+                .requestMatchers("/asignaciones/**").hasAnyAuthority("admin")
+                .requestMatchers("/alumnos/**").hasAnyAuthority("admin", "docente")
+
+                // todas las demás vistas requieren autenticación
+                .anyRequest().authenticated());
+        http.formLogin(form -> form.loginPage("/login").permitAll());
+
+        return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }
